@@ -36,3 +36,4 @@ function updateCounter() {
 
 // Run the function when the page loads
 document.addEventListener('DOMContentLoaded', updateCounter);
+//done
