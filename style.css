@@ -1,0 +1,25 @@
+/* Basic reset and font styling */
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    background-color: #f0f2f5;
+    color: #333;
+}
+
+/* Main container to centre the content */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Styling for the counter text */
+#visit-counter {
+    font-size: 2.5rem;
+    font-weight: 300;
+    line-height: 1.5;
+    max-width: 600px;
+}
