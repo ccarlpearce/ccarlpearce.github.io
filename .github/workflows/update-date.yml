@@ -1,0 +1,45 @@
+# Name of the action, which will appear in the GitHub Actions tab
+name: Update Last Visit Date
+
+# This specifies that the action can be run manually
+on:
+  workflow_dispatch:
+
+# Define the job that will run
+jobs:
+  update-date:
+    # Use the latest version of Ubuntu to run the job
+    runs-on: ubuntu-latest
+
+    # Give the job permission to write back to the repository
+    permissions:
+      contents: write
+
+    steps:
+      # Step 1: Check out a copy of your repository
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      # Step 2: Get today's date and update the config file
+      - name: Update config.js with today's date
+        run: |
+          # Get the current date in YYYY-MM-DD format for your timezone
+          TODAYS_DATE=$(TZ='Europe/London' date +'%Y-%m-%d')
+          
+          # Use the 'sed' command to find the line and replace the date
+          # This looks for "const lastVisitDateString = '...';" and replaces it
+          sed -i "s/const lastVisitDateString = '.*';/const lastVisitDateString = '$TODAYS_DATE';/" config.js
+          
+          echo "Updated config.js with date: $TODAYS_DATE"
+
+      # Step 3: Commit and push the changes
+      - name: Commit and push if there are changes
+        run: |
+          # Configure git with a user name and email
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions-bot@github.com"
+          
+          # Add the modified file, commit it, and push to the main branch
+          git add config.js
+          git commit -m "chore: Update last visit date to $(TZ='Europe/London' date +'%Y-%m-%d')" || echo "No changes to commit"
+          git push
