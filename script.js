@@ -1,7 +1,5 @@
-// --- CONFIGURATION ---
-// Change the date in 'YYYY-MM-DD' format inside the quotes.
-const lastVisitDateString = '2025-09-02';
-// -------------------
+// Import the date from your new config file
+import { lastVisitDateString } from './config.js';
 
 // Function to calculate and display the days
 function updateCounter() {
@@ -19,10 +17,10 @@ function updateCounter() {
     // Calculate the difference in milliseconds
     const timeDifference = today.getTime() - lastVisitDate.getTime();
     
-    // Convert milliseconds to days (1000ms * 60s * 60min * 24hr)
+    // Convert milliseconds to days
     const daysSinceVisit = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
 
-    // Format the date for display in a user-friendly way (e.g., 20 July 2025)
+    // Format the date for display
     const formattedDate = lastVisitDate.toLocaleDateString('en-GB', {
         day: 'numeric',
         month: 'long',
