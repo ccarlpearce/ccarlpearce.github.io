@@ -1,6 +1,6 @@
 // --- CONFIGURATION ---
 // Change the date in 'YYYY-MM-DD' format inside the quotes.
-const lastVisitDateString = '2025-07-20';
+const lastVisitDateString = '2025-09-02';
 // -------------------
 
 // Function to calculate and display the days
