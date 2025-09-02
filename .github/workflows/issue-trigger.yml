@@ -1,0 +1,40 @@
+name: Update Date from Issue
+
+# This workflow runs when an issue is opened
+on:
+  issues:
+    types: [opened]
+
+# Add permissions for the job
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  update-from-issue:
+    # Check if the issue title is exactly "Update Date"
+    if: github.event.issue.title == 'Update Date'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Update config.js with today's date
+        run: |
+          TODAYS_DATE=$(TZ='Europe/London' date +'%Y-%m-%d')
+          sed -i "s/const lastVisitDateString = '.*';/const lastVisitDateString = '$TODAYS_DATE';/" config.js
+          echo "Updated config.js with date: $TODAYS_DATE"
+
+      - name: Commit and push the date change
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions-bot@github.com"
+          git add config.js
+          git commit -m "chore: Update last visit date via issue #${{ github.event.issue.number }}"
+          git push
+
+      - name: Add comment and close issue
+        uses: peter-evans/close-issue@v3
+        with:
+          comment: Thank you! The date has been updated. The site will redeploy shortly.
