@@ -1,4 +1,4 @@
 // --- CONFIGURATION ---
 // Change the date in 'YYYY-MM-DD' format inside the quotes.
-export const lastVisitDateString = '2025-10-06';
+export const lastVisitDateString = '2025-10-09';
 // END
