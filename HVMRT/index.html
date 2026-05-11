@@ -200,6 +200,10 @@
             </div>
         </div>
 
+        <footer class="app-footer">
+            <p>System Version: <subtitle id="app-version">Loading...</subtitle></p>
+        </footer>
+    </div>
 
         <script>
             function openTab(evt, tabName) {
@@ -224,12 +228,47 @@
                 window.location.href = `sms:${recipient}?body=${encodeURIComponent(bodyText)}`;
             }
 
+            // Retrieve the CACHE_NAME version string from sw.js
+            function updateVersionDisplay() {
+                fetch('./sw.js')
+                    .then(response => {
+                        if (!response.ok) throw new Error('Offline or sw.js not found');
+                        return response.text();
+                    })
+                    .then(text => {
+                        // Match CACHE_NAME = 'value' or "value"
+                        const match = text.match(/CACHE_NAME\s*=\s*['"`](.*?)['"`]/);
+                        if (match && match[1]) {
+                            document.getElementById('app-version').textContent = match[1];
+                        } else {
+                            throw new Error('Could not parse version');
+                        }
+                    })
+                    .catch(() => {
+                        // Fallback: If offline and sw.js isn't cached, read browser Cache Storage directly
+                        if ('caches' in window) {
+                            caches.keys().then(keys => {
+                                const activeCache = keys.find(key => key.startsWith('hvmrt'));
+                                document.getElementById('app-version').textContent = activeCache || 'Offline Mode';
+                            });
+                        } else {
+                            document.getElementById('app-version').textContent = 'Offline';
+                        }
+                    });
+            }
+
             // Register the PWA Service Worker
             if ('serviceWorker' in navigator) {
                 window.addEventListener('load', () => {
                     navigator.serviceWorker.register('./sw.js')
-                        .then(reg => console.log('Service Worker registered successfully!', reg.scope))
-                        .catch(err => console.log('Service Worker registration failed:', err));
+                        .then(reg => {
+                            console.log('Service Worker registered successfully!', reg.scope);
+                            updateVersionDisplay();
+                        })
+                        .catch(err => {
+                            console.log('Service Worker registration failed:', err);
+                            updateVersionDisplay();
+                        });
                 });
 
                 // MAGIC SNIPPET: Force reload the page when the new Service Worker takes over
@@ -240,6 +279,9 @@
                         window.location.reload();
                     }
                 });
+            } else {
+                // Run version display even if service workers aren't supported
+                updateVersionDisplay();
             }
         </script>
 </body>
