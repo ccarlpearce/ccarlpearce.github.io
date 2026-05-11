@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en-GB">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HVMRT - Remote Trigger SMS Dashboard</title>
-    
+
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#c8102e">
-    
+
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="HVMRT Trigger">
@@ -16,9 +17,11 @@
     <style>
         :root {
             /* HVMRT brand colour scheme */
-            --primary-colour: #c8102e; /* Mountain Rescue Red */
+            --primary-colour: #c8102e;
+            /* Mountain Rescue Red */
             --primary-hover: #9e0b20;
-            --dark-slate: #232b38; /* Header & Dark Accents */
+            --dark-slate: #232b38;
+            /* Header & Dark Accents */
             --bg-colour: #f4f6f8;
             --card-bg: #ffffff;
             --text-colour: #2c3e50;
@@ -59,7 +62,7 @@
             height: 70px;
             object-fit: contain;
             border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         .header-text {
@@ -91,7 +94,7 @@
             margin-bottom: 25px;
             font-size: 0.9rem;
             color: #4a5568;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
             transition: all 0.2s ease-out;
         }
 
@@ -146,11 +149,17 @@
             color: white;
         }
 
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
 
         h2 {
-            display: none; /* Hidden in favour of tabs */
+            display: none;
+            /* Hidden in favour of tabs */
         }
 
         .table-container {
@@ -166,7 +175,8 @@
             text-align: left;
         }
 
-        th, td {
+        th,
+        td {
             padding: 14px 16px;
             border-bottom: 1px solid var(--border-colour);
             vertical-align: middle;
@@ -281,7 +291,7 @@
             width: 100%;
             box-sizing: border-box;
         }
-        
+
         .log-input::placeholder {
             color: #a0aec0;
             font-style: italic;
@@ -293,13 +303,20 @@
         }
 
         @media (max-width: 768px) {
+
             /* Adapt layout for tablets/mobiles to prevent input squishing */
-            table, thead, tbody, th, td, tr {
+            table,
+            thead,
+            tbody,
+            th,
+            td,
+            tr {
                 display: block;
             }
-            
+
             thead {
-                display: none; /* Hide header labels on mobile stack */
+                display: none;
+                /* Hide header labels on mobile stack */
             }
 
             tr {
@@ -321,234 +338,253 @@
             body {
                 padding: 10px;
             }
+
             .container {
                 padding: 15px;
             }
+
             .header-container {
                 gap: 12px;
                 padding-bottom: 15px;
             }
+
             .logo {
                 width: 55px;
                 height: 55px;
             }
+
             h1 {
                 font-size: 1.3rem;
             }
+
             .subtitle {
                 font-size: 0.8rem;
             }
         }
     </style>
 </head>
+
 <body>
 
-<div class="container">
-    <div class="header-container">
-        <img src="https://holmevalleymrt.org.uk/wp-content/uploads/2023/12/cropped-icon.jpg" alt="HVMRT Logo" class="logo">
-        <div class="header-text">
-            <h1>Remote Trigger SMS Portal</h1>
-            <div class="subtitle">Holme Valley Mountain Rescue Team</div>
-        </div>
-    </div>
-    
-    <details class="instructions">
-        <summary>How to use (tap to expand) </summary>
-        <div class="instructions-content">Tap any action button below. Your native SMS app will launch with the recipient number and system triggers pre-filled. For Incident Logs, type your text in the box before hitting the button. 
-        <p>Always review the message before sending to ensure accuracy. This tool is designed for quick communication with SARCall and team groups, but should be used responsibly and in accordance with team protocols.
-        </div>
-    </details>
-
-    <div class="tabs-nav">
-        <button class="tab-btn active" onclick="openTab(event, 'groups')">Callouts</button>
-        <button class="tab-btn" onclick="openTab(event, 'logs')">Incident Logs</button>
-        <button class="tab-btn" onclick="openTab(event, 'tools')">Tools & Links</button>
-    </div>
-
-    <div id="groups" class="tab-content active">
-    <div class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th style="width: 40%;">Group Name</th>
-                    <th style="width: 20%;">Code</th>
-                    <th style="width: 40%;">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><span class="group-title">Team Leaders</span></td>
-                    <td><span class="badge">TL</span></td>
-                    <td><a href="sms:+447537415551?body=SMS%20HVMRT%20TL%20" class="sms-btn">SMS Team Leaders</a></td>
-                </tr>
-                <tr>
-                    <td><span class="group-title">Full Team</span></td>
-                    <td><span class="badge">FT</span></td>
-                    <td><a href="sms:+447537415551?body=SMS%20HVMRT%20FT%20" class="sms-btn">SMS Full Team</a></td>
-                </tr>
-                <tr>
-                    <td><span class="group-title">Test Group</span></td>
-                    <td><span class="badge">TG</span></td>
-                    <td><a href="sms:+447537415551?body=SMS%20HVMRT%20TG%20" class="sms-btn">SMS Test Group</a></td>
-                </tr>
-                <tr>
-                    <td>
-                        <span class="group-title">Reserves</span>
-                        <!-- <span class="note">Possible future use: MEDICAL or SEARCH MANAGERS</span> -->
-                    </td>
-                    <td><span class="badge">G1</span></td>
-                    <td><a href="sms:+447537415551?body=SMS%20HVMRT%20G1%20" class="sms-btn">SMS Reserves</a></td>
-                </tr>
-                <tr>
-                    <td><span class="group-title">Drivers</span></td>
-                    <td><span class="badge">G2</span></td>
-                    <td><a href="sms:+447537415551?body=SMS%20HVMRT%20G2%20" class="sms-btn">SMS Drivers</a></td>
-                </tr>
-                <tr>
-                    <td><span class="group-title">Water</span></td>
-                    <td><span class="badge">G3</span></td>
-                    <td><a href="sms:+447537415551?body=SMS%20HVMRT%20G3%20" class="sms-btn">SMS Water Team</a></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    </div>
-
-    <div id="logs" class="tab-content">
-    <div class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th style="width: 30%;">Log Action</th>
-                    <th style="width: 50%;">Message Content</th>
-                    <th style="width: 20%;">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        <span class="group-title">Create New Log</span>
-                        <span class="note">Team Leaders / Authorised users. Unlikley to be needed.</span>
-                    </td>
-                    <td>
-                        <div class="input-wrapper">
-                            <span class="prefix-badge">LOGSTART</span>
-                            <input type="text" id="logstart-title" placeholder="e.g. Winter skills training event" class="log-input" enterkeyhint="send">
-                        </div>
-                    </td>
-                    <td>
-                        <button onclick="sendSMS('LOGSTART ', 'logstart-title')" class="sms-btn">Create Log</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span class="group-title">Update Open Log</span>
-                        <span class="note">Up to 500 characters</span>
-                    </td>
-                    <td>
-                        <div class="input-wrapper">
-                            <span class="prefix-badge">LOG HVMRT</span>
-                            <input type="text" id="log-content" placeholder="e.g. Team stood down" maxlength="500" class="log-input" enterkeyhint="send">
-                        </div>
-                    </td>
-                    <td>
-                        <button onclick="sendSMS('LOG HVMRT ', 'log-content')" class="sms-btn">Send Update</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    </div>
-
-    <h2>Functions, Links and Other Tools</h2>
-    <div id="tools" class="tab-content">
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th style="width: 40%;">Function</th>
-                        <th style="width: 20%;">Code</th>
-                        <th style="width: 40%;">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><span class="group-title">Response Summary (SMS)</span></td>
-                        <td><span class="badge">STX</span></td>
-                        <td><a href="sms:+447537415551?body=STX%20HVMRT" class="sms-btn">Get Response Summary as SMS</a></td>
-                    </tr>
-                    <tr>
-                        <td><span class="group-title">Response List (SMS)</span></td>
-                        <td><span class="badge">STL</span></td>
-                        <td><a href="sms:+447537415551?body=STL%20HVMRT" class="sms-btn">Get Full List of Responses as SMS</a></td>
-                    </tr>
-                    <tr>
-                        <td><span class="group-title">Response List (Web)</span></td>
-                        <td></td>
-                        <td><a href="https://sarcall.mountain.rescue.org.uk/remote/remote_handler.php?t=5ffc25f564192657b7f668ca60a48c75ffa399ccb396ea603dfd0101e8555a94" target="_blank" class="sms-btn">Get Full List of Responses</a></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span class="group-title">Misper Form (Web)</span>
-                            <span class="note">Data entry and collection form for initial MISPER calls</span>
-                        </td>
-                        <td></td>
-                        <td><a href="https://hvmrt.github.io/misper/" target="_blank" class="sms-btn">MISPER Data Form</a></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+    <div class="container">
+        <div class="header-container">
+            <img src="https://holmevalleymrt.org.uk/wp-content/uploads/2023/12/cropped-icon.jpg" alt="HVMRT Logo"
+                class="logo">
+            <div class="header-text">
+                <h1>Remote Trigger SMS Portal</h1>
+                <div class="subtitle">Holme Valley Mountain Rescue Team</div>
+            </div>
         </div>
 
+        <details class="instructions">
+            <summary>How to use (tap to expand) </summary>
+            <div class="instructions-content">Tap any action button below. Your native SMS app will launch with the
+                recipient number and system triggers pre-filled. For Incident Logs, type your text in the box before
+                hitting the button.
+                <p>Always review the message before sending to ensure accuracy. This tool is designed for quick
+                    communication with SARCall and team groups, but should be used responsibly and in accordance with
+                    team protocols.
+            </div>
+        </details>
 
-<script>
-    function openTab(evt, tabName) {
-        let content = document.getElementsByClassName("tab-content");
-        for (let i = 0; i < content.length; i++) content[i].classList.remove("active");
+        <div class="tabs-nav">
+            <button class="tab-btn active" onclick="openTab(event, 'groups')">Callouts</button>
+            <button class="tab-btn" onclick="openTab(event, 'logs')">Incident Logs</button>
+            <button class="tab-btn" onclick="openTab(event, 'tools')">Tools & Links</button>
+        </div>
 
-        let buttons = document.getElementsByClassName("tab-btn");
-        for (let i = 0; i < buttons.length; i++) buttons[i].classList.remove("active");
+        <div id="groups" class="tab-content active">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 40%;">Group Name</th>
+                            <th style="width: 20%;">Code</th>
+                            <th style="width: 40%;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="group-title">Team Leaders</span></td>
+                            <td><span class="badge">TL</span></td>
+                            <td><a href="sms:+447537415551?body=SMS%20HVMRT%20TL%20" class="sms-btn">SMS Team
+                                    Leaders</a></td>
+                        </tr>
+                        <tr>
+                            <td><span class="group-title">Full Team</span></td>
+                            <td><span class="badge">FT</span></td>
+                            <td><a href="sms:+447537415551?body=SMS%20HVMRT%20FT%20" class="sms-btn">SMS Full Team</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span class="group-title">Test Group</span></td>
+                            <td><span class="badge">TG</span></td>
+                            <td><a href="sms:+447537415551?body=SMS%20HVMRT%20TG%20" class="sms-btn">SMS Test Group</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="group-title">Reserves</span>
+                                <!-- <span class="note">Possible future use: MEDICAL or SEARCH MANAGERS</span> -->
+                            </td>
+                            <td><span class="badge">G1</span></td>
+                            <td><a href="sms:+447537415551?body=SMS%20HVMRT%20G1%20" class="sms-btn">SMS Reserves</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span class="group-title">Drivers</span></td>
+                            <td><span class="badge">G2</span></td>
+                            <td><a href="sms:+447537415551?body=SMS%20HVMRT%20G2%20" class="sms-btn">SMS Drivers</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span class="group-title">Water</span></td>
+                            <td><span class="badge">G3</span></td>
+                            <td><a href="sms:+447537415551?body=SMS%20HVMRT%20G3%20" class="sms-btn">SMS Water Team</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-        document.getElementById(tabName).classList.add("active");
-        evt.currentTarget.classList.add("active");
-    }
+        <div id="logs" class="tab-content">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 30%;">Log Action</th>
+                            <th style="width: 50%;">Message Content</th>
+                            <th style="width: 20%;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <span class="group-title">Create New Log</span>
+                                <span class="note">Team Leaders / Authorised users. Unlikley to be needed.</span>
+                            </td>
+                            <td>
+                                <div class="input-wrapper">
+                                    <span class="prefix-badge">LOGSTART</span>
+                                    <input type="text" id="logstart-title"
+                                        placeholder="e.g. Winter skills training event" class="log-input"
+                                        enterkeyhint="send">
+                                </div>
+                            </td>
+                            <td>
+                                <button onclick="sendSMS('LOGSTART ', 'logstart-title')" class="sms-btn">Create
+                                    Log</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="group-title">Update Open Log</span>
+                                <span class="note">Up to 500 characters</span>
+                            </td>
+                            <td>
+                                <div class="input-wrapper">
+                                    <span class="prefix-badge">LOG HVMRT</span>
+                                    <input type="text" id="log-content" placeholder="e.g. Team stood down"
+                                        maxlength="500" class="log-input" enterkeyhint="send">
+                                </div>
+                            </td>
+                            <td>
+                                <button onclick="sendSMS('LOG HVMRT ', 'log-content')" class="sms-btn">Send
+                                    Update</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-    // JS to handle dynamic SMS construction based on user input
-    function sendSMS(prefix, inputId) {
-        const inputElement = document.getElementById(inputId);
-        const text = inputElement ? inputElement.value.trim() : '';
-        const recipient = '+447537415551';
-        
-        // Construct standard SMS URI format
-        const bodyText = prefix + text;
-        window.location.href = `sms:${recipient}?body=${encodeURIComponent(bodyText)}`;
-    }
+        <h2>Functions, Links and Other Tools</h2>
+        <div id="tools" class="tab-content">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 40%;">Function</th>
+                            <th style="width: 20%;">Code</th>
+                            <th style="width: 40%;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="group-title">Response Summary (SMS)</span></td>
+                            <td><span class="badge">STX</span></td>
+                            <td><a href="sms:+447537415551?body=STX%20HVMRT" class="sms-btn">Get Response Summary as
+                                    SMS</a></td>
+                        </tr>
+                        <tr>
+                            <td><span class="group-title">Response List (SMS)</span></td>
+                            <td><span class="badge">STL</span></td>
+                            <td><a href="sms:+447537415551?body=STL%20HVMRT" class="sms-btn">Get Full List of Responses
+                                    as SMS</a></td>
+                        </tr>
+                        <tr>
+                            <td><span class="group-title">Response List (Web)</span></td>
+                            <td></td>
+                            <td><a href="https://sarcall.mountain.rescue.org.uk/remote/remote_handler.php?t=5ffc25f564192657b7f668ca60a48c75ffa399ccb396ea603dfd0101e8555a94"
+                                    target="_blank" class="sms-btn">Get Full List of Responses</a></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="group-title">Misper Form (Web)</span>
+                                <span class="note">Data entry and collection form for initial MISPER calls</span>
+                            </td>
+                            <td></td>
+                            <td><a href="https://hvmrt.github.io/misper/" target="_blank" class="sms-btn">MISPER Data
+                                    Form</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-    // Register the PWA Service Worker
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('./sw.js')
-                .then(reg => console.log('Service Worker registered successfully!', reg.scope))
-                .catch(err => console.log('Service Worker registration failed:', err));
-        });
-    }
 
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('./sw.js')
-                .then(reg => console.log('Service Worker registered successfully!', reg.scope))
-                .catch(err => console.log('Service Worker registration failed:', err));
-        });
+        <script>
+            function openTab(evt, tabName) {
+                let content = document.getElementsByClassName("tab-content");
+                for (let i = 0; i < content.length; i++) content[i].classList.remove("active");
 
-        // MAGIC SNIPPET: Force reload the page when the new Service Worker takes over
-        let refreshing = false;
-        navigator.serviceWorker.addEventListener('controllerchange', () => {
-            if (!refreshing) {
-                refreshing = true;
-                window.location.reload();
+                let buttons = document.getElementsByClassName("tab-btn");
+                for (let i = 0; i < buttons.length; i++) buttons[i].classList.remove("active");
+
+                document.getElementById(tabName).classList.add("active");
+                evt.currentTarget.classList.add("active");
             }
-        });
-    }
-</script>
+
+            // JS to handle dynamic SMS construction based on user input
+            function sendSMS(prefix, inputId) {
+                const inputElement = document.getElementById(inputId);
+                const text = inputElement ? inputElement.value.trim() : '';
+                const recipient = '+447537415551';
+
+                // Construct standard SMS URI format
+                const bodyText = prefix + text;
+                window.location.href = `sms:${recipient}?body=${encodeURIComponent(bodyText)}`;
+            }
+
+            // Register the PWA Service Worker
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('./sw.js')
+                        .then(reg => console.log('Service Worker registered successfully!', reg.scope))
+                        .catch(err => console.log('Service Worker registration failed:', err));
+                });
+                
+                // MAGIC SNIPPET: Force reload the page when the new Service Worker takes over
+                let refreshing = false;
+                navigator.serviceWorker.addEventListener('controllerchange', () => {
+                    if (!refreshing) {
+                        refreshing = true;
+                        window.location.reload();
+                    }
+                });
+            }
+        </script>
 </body>
+
 </html>
