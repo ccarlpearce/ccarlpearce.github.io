@@ -118,13 +118,39 @@
             background-color: #fffcfc;
         }
 
-        h2 {
-            font-size: 1.25rem;
+        /* Tab System */
+        .tabs-nav {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 15px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px 10px;
+            border: none;
+            background: #edf2f7;
             color: var(--dark-slate);
-            margin: 30px 0 15px 0;
             font-weight: 700;
-            border-bottom: 2px solid var(--border-colour);
-            padding-bottom: 8px;
+            cursor: pointer;
+            border-radius: 6px;
+            white-space: nowrap;
+            transition: all 0.2s;
+            font-size: 0.85rem;
+        }
+
+        .tab-btn.active {
+            background: var(--primary-colour);
+            color: white;
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        h2 {
+            display: none; /* Hidden in favour of tabs */
         }
 
         .table-container {
@@ -215,7 +241,7 @@
 
         .note {
             font-size: 0.8rem;
-            color: #718096;
+            color: #4a5568;
             display: block;
             margin-top: 4px;
             font-weight: 400;
@@ -254,6 +280,11 @@
             outline: none;
             width: 100%;
             box-sizing: border-box;
+        }
+        
+        .log-input::placeholder {
+            color: #a0aec0;
+            font-style: italic;
         }
 
         .input-wrapper:focus-within {
@@ -323,13 +354,18 @@
     
     <details class="instructions">
         <summary>How to use (tap to expand) </summary>
-        <div class="instructions-content"> Tap any action button below. Your native SMS app will launch with the recipient number and system triggers pre-filled. For Incident Logs, type your text in the box before hitting the button. 
+        <div class="instructions-content">Tap any action button below. Your native SMS app will launch with the recipient number and system triggers pre-filled. For Incident Logs, type your text in the box before hitting the button. 
         <p>Always review the message before sending to ensure accuracy. This tool is designed for quick communication with SARCall and team groups, but should be used responsibly and in accordance with team protocols.
         </div>
     </details>
+
+    <div class="tabs-nav">
+        <button class="tab-btn active" onclick="openTab(event, 'groups')">Callouts</button>
+        <button class="tab-btn" onclick="openTab(event, 'logs')">Incident Logs</button>
+        <button class="tab-btn" onclick="openTab(event, 'tools')">Tools & Links</button>
     </div>
 
-    <h2>Team Group Callouts</h2>
+    <div id="groups" class="tab-content active">
     <div class="table-container">
         <table>
             <thead>
@@ -378,7 +414,7 @@
     </div>
     </div>
 
-    <h2>SARCall Incident Logs</h2>
+    <div id="logs" class="tab-content">
     <div class="table-container">
         <table>
             <thead>
@@ -397,7 +433,7 @@
                     <td>
                         <div class="input-wrapper">
                             <span class="prefix-badge">LOGSTART</span>
-                            <input type="text" id="logstart-title" placeholder="e.g. Winter skills training event" class="log-input">
+                            <input type="text" id="logstart-title" placeholder="e.g. Winter skills training event" class="log-input" enterkeyhint="send">
                         </div>
                     </td>
                     <td>
@@ -412,7 +448,7 @@
                     <td>
                         <div class="input-wrapper">
                             <span class="prefix-badge">LOG HVMRT</span>
-                            <input type="text" id="log-content" placeholder="e.g. Team stood down" maxlength="500" class="log-input">
+                            <input type="text" id="log-content" placeholder="e.g. Team stood down" maxlength="500" class="log-input" enterkeyhint="send">
                         </div>
                     </td>
                     <td>
@@ -422,47 +458,61 @@
             </tbody>
         </table>
     </div>
-</div>
-
-<h2>Functions, Links and Other Tools</h2>
-    <div class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th style="width: 40%;">Function</th>
-                    <th style="width: 20%;">Code</th>
-                    <th style="width: 40%;">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><span class="group-title">Response Summary (SMS)</span></td>
-                    <td><span class="badge">STX</span></td>
-                    <td><a href="sms:+447537415551?body=STX%20HVMRT" class="sms-btn">Get Response Summary as SMS</a></td>
-                </tr>
-                <tr>
-                    <td><span class="group-title">Response List (SMS)</span></td>
-                    <td><span class="badge">STL</span></td>
-                    <td><a href="sms:+447537415551?body=STL%20HVMRT" class="sms-btn">Get Full List of Responses as SMS</a></td>
-                </tr>
-                <tr>
-                    <td><span class="group-title">Response List (Web)</span></td>
-                    <td></td>
-                    <td><a href="https://sarcall.mountain.rescue.org.uk/remote/remote_handler.php?t=5ffc25f564192657b7f668ca60a48c75ffa399ccb396ea603dfd0101e8555a94" target="_blank" class="sms-btn">Get Full List of Responses</a></td>
-                </tr>
-                <tr>
-                    <td>
-                        <span class="group-title">Misper Form (Web)</span>
-                        <span class="note">Data entry and collection from for initial MISPER calls</span>
-                    </td>
-                    <td></td>
-                    <td><a href="https://hvmrt.github.io/misper/" target="_blank" class="sms-btn">MISPER Data Form</a></td>
-                </tr>
-            </tbody>
-        </table>
     </div>
 
+    <h2>Functions, Links and Other Tools</h2>
+    <div id="tools" class="tab-content">
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 40%;">Function</th>
+                        <th style="width: 20%;">Code</th>
+                        <th style="width: 40%;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="group-title">Response Summary (SMS)</span></td>
+                        <td><span class="badge">STX</span></td>
+                        <td><a href="sms:+447537415551?body=STX%20HVMRT" class="sms-btn">Get Response Summary as SMS</a></td>
+                    </tr>
+                    <tr>
+                        <td><span class="group-title">Response List (SMS)</span></td>
+                        <td><span class="badge">STL</span></td>
+                        <td><a href="sms:+447537415551?body=STL%20HVMRT" class="sms-btn">Get Full List of Responses as SMS</a></td>
+                    </tr>
+                    <tr>
+                        <td><span class="group-title">Response List (Web)</span></td>
+                        <td></td>
+                        <td><a href="https://sarcall.mountain.rescue.org.uk/remote/remote_handler.php?t=5ffc25f564192657b7f668ca60a48c75ffa399ccb396ea603dfd0101e8555a94" target="_blank" class="sms-btn">Get Full List of Responses</a></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="group-title">Misper Form (Web)</span>
+                            <span class="note">Data entry and collection from for initial MISPER calls</span>
+                        </td>
+                        <td></td>
+                        <td><a href="https://hvmrt.github.io/misper/" target="_blank" class="sms-btn">MISPER Data Form</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        </div>
+
+
 <script>
+    function openTab(evt, tabName) {
+        let content = document.getElementsByClassName("tab-content");
+        for (let i = 0; i < content.length; i++) content[i].classList.remove("active");
+
+        let buttons = document.getElementsByClassName("tab-btn");
+        for (let i = 0; i < buttons.length; i++) buttons[i].classList.remove("active");
+
+        document.getElementById(tabName).classList.add("active");
+        evt.currentTarget.classList.add("active");
+    }
+
     // JS to handle dynamic SMS construction based on user input
     function sendSMS(prefix, inputId) {
         const inputElement = document.getElementById(inputId);
