@@ -535,8 +535,12 @@
                                 <span class="note">Data entry and collection form for initial MISPER calls</span>
                             </td>
                             <td></td>
-                            <td><a href="https://hvmrt.github.io/misper/" target="_blank" class="sms-btn">MISPER Data
-                                    Form</a></td>
+                            <td><a href="https://hvmrt.github.io/misper/" target="_blank" class="sms-btn">MISPER Data Form</a></td>
+                        </tr>
+                        <tr>
+                            <td><span class="group-title">MRMap Mobile (Web)</span></td>
+                            <td></td>
+                            <td><a href="https://mrmapmobile.wmrt.org.uk" target="_blank" class="sms-btn">MRMap Mobile</a></td>
                         </tr>
                     </tbody>
                 </table>
@@ -574,7 +578,7 @@
                         .then(reg => console.log('Service Worker registered successfully!', reg.scope))
                         .catch(err => console.log('Service Worker registration failed:', err));
                 });
-                
+
                 // MAGIC SNIPPET: Force reload the page when the new Service Worker takes over
                 let refreshing = false;
                 navigator.serviceWorker.addEventListener('controllerchange', () => {
