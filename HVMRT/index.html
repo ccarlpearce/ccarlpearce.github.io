@@ -4,9 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HVMRT - Remote Trigger SMS Dashboard</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#c8102e">
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="HVMRT Trigger">
+    <link rel="apple-touch-icon" href="icon-192.png">
+
     <style>
         :root {
-            /* HVMRT-inspired colour scheme */
             --primary-colour: #c8102e; /* Mountain Rescue Red */
             --primary-hover: #9e0b20;
             --dark-slate: #232b38; /* Header & Dark Accents */
@@ -36,7 +44,6 @@
             border-top: 5px solid var(--primary-colour);
         }
 
-        /* Header Layout with Logo */
         .header-container {
             display: flex;
             align-items: center;
@@ -123,7 +130,6 @@
             background-color: #fcfdfe;
         }
 
-        /* Mobile-friendly Button Styles */
         .sms-btn {
             display: inline-flex;
             align-items: center;
@@ -175,7 +181,6 @@
             font-weight: 400;
         }
 
-        /* Responsive styling for small mobile screens */
         @media (max-width: 580px) {
             body {
                 padding: 10px;
@@ -220,7 +225,7 @@
     </div>
     
     <div class="instructions">
-        <strong>How to use:</strong> Tap any of the red "Send SMS" buttons below from your mobile device. Your native SMS app will launch with the recipient's number and the trigger prefix already pre-filled. Simply type your message after the code and send.
+        <strong>How to use:</strong> Tap any of the red "Send SMS" buttons below. Your mobile SMS app will launch with the team number and trigger prefix already pre-filled. Simply type your message after the code and send.
     </div>
 
     <div class="table-container">
@@ -234,31 +239,19 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>
-                        <span class="group-title">Team Leaders</span>
-                    </td>
+                    <td><span class="group-title">Team Leaders</span></td>
                     <td><span class="badge">TL</span></td>
-                    <td>
-                        <a href="sms:+447537415551?body=SMS%20HVMRT%20TL%20" class="sms-btn">Send SMS to Team Leaders</a>
-                    </td>
+                    <td><a href="sms:+447537415551?body=SMS%20HVMRT%20TL%20" class="sms-btn">Send SMS to Team Leaders</a></td>
                 </tr>
                 <tr>
-                    <td>
-                        <span class="group-title">Full Team</span>
-                    </td>
+                    <td><span class="group-title">Full Team</span></td>
                     <td><span class="badge">FT</span></td>
-                    <td>
-                        <a href="sms:+447537415551?body=SMS%20HVMRT%20FT%20" class="sms-btn">Send SMS to Full Team</a>
-                    </td>
+                    <td><a href="sms:+447537415551?body=SMS%20HVMRT%20FT%20" class="sms-btn">Send SMS to Full Team</a></td>
                 </tr>
                 <tr>
-                    <td>
-                        <span class="group-title">Test Group</span>
-                    </td>
+                    <td><span class="group-title">Test Group</span></td>
                     <td><span class="badge">TG</span></td>
-                    <td>
-                        <a href="sms:+447537415551?body=SMS%20HVMRT%20TG%20" class="sms-btn">Send SMS to Test Group</a>
-                    </td>
+                    <td><a href="sms:+447537415551?body=SMS%20HVMRT%20TG%20" class="sms-btn">Send SMS to Test Group</a></td>
                 </tr>
                 <tr>
                     <td>
@@ -266,32 +259,33 @@
                         <span class="note">Possible future use: MEDICAL or SEARCH MANAGERS</span>
                     </td>
                     <td><span class="badge">G1</span></td>
-                    <td>
-                        <a href="sms:+447537415551?body=SMS%20HVMRT%20G1%20" class="sms-btn">Send SMS to Reserves</a>
-                    </td>
+                    <td><a href="sms:+447537415551?body=SMS%20HVMRT%20G1%20" class="sms-btn">Send SMS to Reserves</a></td>
                 </tr>
                 <tr>
-                    <td>
-                        <span class="group-title">Drivers</span>
-                    </td>
+                    <td><span class="group-title">Drivers</span></td>
                     <td><span class="badge">G2</span></td>
-                    <td>
-                        <a href="sms:+447537415551?body=SMS%20HVMRT%20G2%20" class="sms-btn">Send SMS to Drivers</a>
-                    </td>
+                    <td><a href="sms:+447537415551?body=SMS%20HVMRT%20G2%20" class="sms-btn">Send SMS to Drivers</a></td>
                 </tr>
                 <tr>
-                    <td>
-                        <span class="group-title">Water</span>
-                    </td>
+                    <td><span class="group-title">Water</span></td>
                     <td><span class="badge">G3</span></td>
-                    <td>
-                        <a href="sms:+447537415551?body=SMS%20HVMRT%20G3%20" class="sms-btn">Send SMS to Water Team</a>
-                    </td>
+                    <td><a href="sms:+447537415551?body=SMS%20HVMRT%20G3%20" class="sms-btn">Send SMS to Water Team</a></td>
                 </tr>
             </tbody>
         </table>
     </div>
 </div>
+
+<script>
+    // Register the Service Worker
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js')
+                .then(reg => console.log('Service Worker registered successfully!', reg.scope))
+                .catch(err => console.log('Service Worker registration failed:', err));
+        });
+    }
+</script>
 
 </body>
 </html>
