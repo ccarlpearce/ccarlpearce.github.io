@@ -86,13 +86,36 @@
 
         .instructions {
             background-color: var(--instruction-bg);
-            padding: 15px 20px;
             border-left: 4px solid var(--primary-colour);
             border-radius: 6px;
             margin-bottom: 25px;
             font-size: 0.9rem;
             color: #4a5568;
             box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+            transition: all 0.2s ease-out;
+        }
+
+        /* The clickable header of the collapsible area */
+        .instructions summary {
+            padding: 15px 20px;
+            font-weight: 700;
+            cursor: pointer;
+            outline: none;
+            user-select: none;
+            color: var(--dark-slate);
+        }
+
+        /* Style for the nested instruction text when open */
+        .instructions .instructions-content {
+            padding: 0 20px 15px 20px;
+            margin: 0;
+            font-size: 0.875rem;
+            color: #4a5568;
+        }
+
+        /* Optional: Subtle background colour shift when open */
+        .instructions[open] {
+            background-color: #fffcfc;
         }
 
         h2 {
@@ -121,6 +144,7 @@
             padding: 14px 16px;
             border-bottom: 1px solid var(--border-colour);
             vertical-align: middle;
+            text-align: center;
         }
 
         th {
@@ -179,7 +203,7 @@
             font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
             font-size: 0.85rem;
             font-weight: 700;
-            border: 1px solid #cbd5e0;
+            border: 0px solid #cbd5e0;
             display: inline-block;
         }
 
@@ -297,8 +321,12 @@
         </div>
     </div>
     
-    <div class="instructions">
-        <strong>How to use:</strong> Tap any action button below. Your native SMS app will launch with the recipient number and system triggers pre-filled. For Incident Logs, type your text in the box before hitting the button.
+    <details class="instructions">
+        <summary>How to use (tap to expand) </summary>
+        <div class="instructions-content"> Tap any action button below. Your native SMS app will launch with the recipient number and system triggers pre-filled. For Incident Logs, type your text in the box before hitting the button. 
+        <p>Always review the message before sending to ensure accuracy. This tool is designed for quick communication with SARCall and team groups, but should be used responsibly and in accordance with team protocols.
+        </div>
+    </details>
     </div>
 
     <h2>Team Group Callouts</h2>
@@ -315,17 +343,17 @@
                 <tr>
                     <td><span class="group-title">Team Leaders</span></td>
                     <td><span class="badge">TL</span></td>
-                    <td><a href="sms:+447537415551?body=SMS%20HVMRT%20TL%20" class="sms-btn">Send SMS to Team Leaders</a></td>
+                    <td><a href="sms:+447537415551?body=SMS%20HVMRT%20TL%20" class="sms-btn">SMS Team Leaders</a></td>
                 </tr>
                 <tr>
                     <td><span class="group-title">Full Team</span></td>
                     <td><span class="badge">FT</span></td>
-                    <td><a href="sms:+447537415551?body=SMS%20HVMRT%20FT%20" class="sms-btn">Send SMS to Full Team</a></td>
+                    <td><a href="sms:+447537415551?body=SMS%20HVMRT%20FT%20" class="sms-btn">SMS Full Team</a></td>
                 </tr>
                 <tr>
                     <td><span class="group-title">Test Group</span></td>
                     <td><span class="badge">TG</span></td>
-                    <td><a href="sms:+447537415551?body=SMS%20HVMRT%20TG%20" class="sms-btn">Send SMS to Test Group</a></td>
+                    <td><a href="sms:+447537415551?body=SMS%20HVMRT%20TG%20" class="sms-btn">SMS Test Group</a></td>
                 </tr>
                 <tr>
                     <td>
@@ -333,20 +361,21 @@
                         <!-- <span class="note">Possible future use: MEDICAL or SEARCH MANAGERS</span> -->
                     </td>
                     <td><span class="badge">G1</span></td>
-                    <td><a href="sms:+447537415551?body=SMS%20HVMRT%20G1%20" class="sms-btn">Send SMS to Reserves</a></td>
+                    <td><a href="sms:+447537415551?body=SMS%20HVMRT%20G1%20" class="sms-btn">SMS Reserves</a></td>
                 </tr>
                 <tr>
                     <td><span class="group-title">Drivers</span></td>
                     <td><span class="badge">G2</span></td>
-                    <td><a href="sms:+447537415551?body=SMS%20HVMRT%20G2%20" class="sms-btn">Send SMS to Drivers</a></td>
+                    <td><a href="sms:+447537415551?body=SMS%20HVMRT%20G2%20" class="sms-btn">SMS Drivers</a></td>
                 </tr>
                 <tr>
                     <td><span class="group-title">Water</span></td>
                     <td><span class="badge">G3</span></td>
-                    <td><a href="sms:+447537415551?body=SMS%20HVMRT%20G3%20" class="sms-btn">Send SMS to Water Team</a></td>
+                    <td><a href="sms:+447537415551?body=SMS%20HVMRT%20G3%20" class="sms-btn">SMS Water Team</a></td>
                 </tr>
             </tbody>
         </table>
+    </div>
     </div>
 
     <h2>SARCall Incident Logs</h2>
@@ -363,7 +392,7 @@
                 <tr>
                     <td>
                         <span class="group-title">Create New Log</span>
-                        <span class="note">Team Leaders / Authorised users</span>
+                        <span class="note">Team Leaders / Authorised users. Unlikley to be needed.</span>
                     </td>
                     <td>
                         <div class="input-wrapper">
@@ -413,8 +442,8 @@
                 </tr>
                 <tr>
                     <td><span class="group-title">Response List (Web)</span></td>
-                    <td><span class="badge">Web Link</span></td>
-                    <td><a href="https://sarcall.mountain.rescue.org.uk/remote/remote_handler.php?t=5ffc25f564192657b7f668ca60a48c75ffa399ccb396ea603dfd0101e8555a94">Get Full List of Responses</a></td>
+                    <td></td>
+                    <td><a href="https://sarcall.mountain.rescue.org.uk/remote/remote_handler.php?t=5ffc25f564192657b7f668ca60a48c75ffa399ccb396ea603dfd0101e8555a94" class="sms-btn">Get Full List of Responses</a></td>
                 </tr>
                 <tr>
                     <td><span class="group-title">Response List (SMS)</span></td>
@@ -446,6 +475,5 @@
         });
     }
 </script>
-
 </body>
 </html>
