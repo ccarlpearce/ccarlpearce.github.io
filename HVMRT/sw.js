@@ -1,10 +1,11 @@
-const CACHE_NAME = 'hvmrt-sms-portal-v1.4';
+const CACHE_NAME = 'hvmrt-sms-portal-v1.5';
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
   './icon-192.png',
-  './icon-512.png'
+  './icon-512.png',
+  './styles.css'
 ];
 
 // Install Service Worker and cache assets

@@ -1,0 +1,346 @@
+:root {
+    /* HVMRT brand colour scheme */
+    --primary-colour: #c8102e;
+    /* Mountain Rescue Red */
+    --primary-hover: #9e0b20;
+    --dark-slate: #232b38;
+    /* Header & Dark Accents */
+    --bg-colour: #f4f6f8;
+    --card-bg: #ffffff;
+    --text-colour: #2c3e50;
+    --border-colour: #e2e8f0;
+    --instruction-bg: #fff5f5;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-colour);
+    color: var(--text-colour);
+    line-height: 1.6;
+    margin: 0;
+    padding: 15px;
+}
+
+.container {
+    max-width: 100%;
+    margin: 10px auto;
+    background: var(--card-bg);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-top: 5px solid var(--primary-colour);
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 25px;
+    border-bottom: 2px solid var(--border-colour);
+    padding-bottom: 20px;
+}
+
+.logo {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.header-text {
+    display: flex;
+    flex-direction: column;
+}
+
+h1 {
+    font-size: 1.6rem;
+    margin: 0;
+    color: var(--dark-slate);
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.subtitle {
+    font-size: 0.95rem;
+    color: var(--primary-colour);
+    margin: 2px 0 0 0;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.instructions {
+    background-color: var(--instruction-bg);
+    border-left: 4px solid var(--primary-colour);
+    border-radius: 6px;
+    margin-bottom: 25px;
+    font-size: 0.9rem;
+    color: #4a5568;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    transition: all 0.2s ease-out;
+}
+
+/* The clickable header of the collapsible area */
+.instructions summary {
+    padding: 15px 20px;
+    font-weight: 700;
+    cursor: pointer;
+    outline: none;
+    user-select: none;
+    color: var(--dark-slate);
+}
+
+/* Style for the nested instruction text when open */
+.instructions .instructions-content {
+    padding: 0 20px 15px 20px;
+    margin: 0;
+    font-size: 0.875rem;
+    color: #4a5568;
+}
+
+/* Optional: Subtle background colour shift when open */
+.instructions[open] {
+    background-color: #fffcfc;
+}
+
+/* Tab System */
+.tabs-nav {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 15px;
+    overflow-x: auto;
+    padding-bottom: 5px;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 12px 10px;
+    border: none;
+    background: #edf2f7;
+    color: var(--dark-slate);
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 6px;
+    white-space: nowrap;
+    transition: all 0.2s;
+    font-size: 0.85rem;
+}
+
+.tab-btn.active {
+    background: var(--primary-colour);
+    color: white;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+h2 {
+    display: none;
+    /* Hidden in favour of tabs */
+}
+
+.table-container {
+    overflow-x: auto;
+    border-radius: 8px;
+    border: 1px solid var(--border-colour);
+    background: var(--card-bg);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+th,
+td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border-colour);
+    vertical-align: middle;
+    text-align: center;
+}
+
+th {
+    background-color: var(--dark-slate);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tr:hover {
+    background-color: #fcfdfe;
+}
+
+/* Buttons & Tap Targets */
+.sms-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--primary-colour);
+    color: white;
+    text-decoration: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-align: center;
+    white-space: nowrap;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    box-shadow: 0 2px 4px rgba(200, 16, 46, 0.2);
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.sms-btn:hover {
+    background-color: var(--primary-hover);
+}
+
+.sms-btn:active {
+    transform: scale(0.98);
+}
+
+.badge {
+    background-color: #edf2f7;
+    color: var(--dark-slate);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border: 0px solid #cbd5e0;
+    display: inline-block;
+}
+
+.group-title {
+    font-size: 1rem;
+    color: var(--dark-slate);
+    font-weight: 700;
+}
+
+.note {
+    font-size: 0.8rem;
+    color: #4a5568;
+    display: block;
+    margin-top: 4px;
+    font-weight: 400;
+}
+
+/* Input Styles for Log entries */
+.input-wrapper {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--border-colour);
+    border-radius: 6px;
+    background-color: #f8fafc;
+    overflow: hidden;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.prefix-badge {
+    background-color: #edf2f7;
+    color: var(--dark-slate);
+    padding: 8px 12px;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border-right: 1px solid var(--border-colour);
+    white-space: nowrap;
+}
+
+.log-input {
+    border: none;
+    background: transparent;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    color: var(--text-colour);
+    flex-grow: 1;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.log-input::placeholder {
+    color: #a0aec0;
+    font-style: italic;
+}
+
+.input-wrapper:focus-within {
+    border-color: var(--primary-colour);
+    box-shadow: 0 0 0 3px rgba(200, 16, 46, 0.15);
+}
+
+@media (max-width: 768px) {
+
+    /* Adapt layout for tablets/mobiles to prevent input squishing */
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+        display: block;
+    }
+
+    thead {
+        display: none;
+        /* Hide header labels on mobile stack */
+    }
+
+    tr {
+        border-bottom: 2px solid var(--border-colour);
+        padding: 15px 0;
+    }
+
+    td {
+        border: none;
+        padding: 6px 0;
+    }
+
+    .sms-btn {
+        margin-top: 8px;
+    }
+}
+
+@media (max-width: 580px) {
+    body {
+        padding: 10px;
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    .header-container {
+        gap: 12px;
+        padding-bottom: 15px;
+    }
+
+    .logo {
+        width: 55px;
+        height: 55px;
+    }
+
+    h1 {
+        font-size: 1.3rem;
+    }
+
+    .subtitle {
+        font-size: 0.8rem;
+    }
+}
