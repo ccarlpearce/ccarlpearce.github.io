@@ -15,6 +15,7 @@
 
     <style>
         :root {
+            /* HVMRT brand colour scheme */
             --primary-colour: #c8102e; /* Mountain Rescue Red */
             --primary-hover: #9e0b20;
             --dark-slate: #232b38; /* Header & Dark Accents */
@@ -94,17 +95,26 @@
             box-shadow: 0 1px 3px rgba(0,0,0,0.02);
         }
 
+        h2 {
+            font-size: 1.25rem;
+            color: var(--dark-slate);
+            margin: 30px 0 15px 0;
+            font-weight: 700;
+            border-bottom: 2px solid var(--border-colour);
+            padding-bottom: 8px;
+        }
+
         .table-container {
             overflow-x: auto;
             border-radius: 8px;
             border: 1px solid var(--border-colour);
+            background: var(--card-bg);
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             text-align: left;
-            background: var(--card-bg);
         }
 
         th, td {
@@ -130,6 +140,7 @@
             background-color: #fcfdfe;
         }
 
+        /* Buttons & Tap Targets */
         .sms-btn {
             display: inline-flex;
             align-items: center;
@@ -145,6 +156,11 @@
             white-space: nowrap;
             transition: background-color 0.2s ease, transform 0.1s ease;
             box-shadow: 0 2px 4px rgba(200, 16, 46, 0.2);
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .sms-btn:hover {
@@ -181,6 +197,71 @@
             font-weight: 400;
         }
 
+        /* Input Styles for Log entries */
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--border-colour);
+            border-radius: 6px;
+            background-color: #f8fafc;
+            overflow: hidden;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .prefix-badge {
+            background-color: #edf2f7;
+            color: var(--dark-slate);
+            padding: 8px 12px;
+            font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border-right: 1px solid var(--border-colour);
+            white-space: nowrap;
+        }
+
+        .log-input {
+            border: none;
+            background: transparent;
+            padding: 8px 12px;
+            font-size: 0.9rem;
+            color: var(--text-colour);
+            flex-grow: 1;
+            outline: none;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .input-wrapper:focus-within {
+            border-color: var(--primary-colour);
+            box-shadow: 0 0 0 3px rgba(200, 16, 46, 0.15);
+        }
+
+        @media (max-width: 768px) {
+            /* Adapt layout for tablets/mobiles to prevent input squishing */
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+            
+            thead {
+                display: none; /* Hide header labels on mobile stack */
+            }
+
+            tr {
+                border-bottom: 2px solid var(--border-colour);
+                padding: 15px 0;
+            }
+
+            td {
+                border: none;
+                padding: 6px 0;
+            }
+
+            .sms-btn {
+                margin-top: 8px;
+            }
+        }
+
         @media (max-width: 580px) {
             body {
                 padding: 10px;
@@ -202,14 +283,6 @@
             .subtitle {
                 font-size: 0.8rem;
             }
-            th, td {
-                padding: 10px;
-            }
-            .sms-btn {
-                padding: 8px 12px;
-                font-size: 0.8rem;
-                display: block;
-            }
         }
     </style>
 </head>
@@ -225,16 +298,17 @@
     </div>
     
     <div class="instructions">
-        <strong>How to use:</strong> Tap any of the red "Send SMS" buttons below. Your mobile SMS app will launch with the team number and trigger prefix already pre-filled. Simply type your message after the code and send.
+        <strong>How to use:</strong> Tap any action button below. Your native SMS app will launch with the recipient number and system triggers pre-filled. For Incident Logs, type your text in the box before hitting the button.
     </div>
 
+    <h2>Team Group Callouts</h2>
     <div class="table-container">
         <table>
             <thead>
                 <tr>
-                    <th>Group Name</th>
-                    <th>Code</th>
-                    <th>Action</th>
+                    <th style="width: 40%;">Group Name</th>
+                    <th style="width: 20%;">Code</th>
+                    <th style="width: 40%;">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -274,10 +348,66 @@
             </tbody>
         </table>
     </div>
+
+    <h2>SARCall Incident Logs</h2>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 30%;">Log Action</th>
+                    <th style="width: 50%;">Message Content</th>
+                    <th style="width: 20%;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <span class="group-title">Create New Log</span>
+                        <span class="note">Team Leaders / Authorised users</span>
+                    </td>
+                    <td>
+                        <div class="input-wrapper">
+                            <span class="prefix-badge">LOGSTART</span>
+                            <input type="text" id="logstart-title" placeholder="e.g. Winter skills training event" class="log-input">
+                        </div>
+                    </td>
+                    <td>
+                        <button onclick="sendSMS('LOGSTART ', 'logstart-title')" class="sms-btn">Create Log</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="group-title">Update Open Log</span>
+                        <span class="note">Up to 500 characters</span>
+                    </td>
+                    <td>
+                        <div class="input-wrapper">
+                            <span class="prefix-badge">LOG HVMRT</span>
+                            <input type="text" id="log-content" placeholder="e.g. Team stood down" maxlength="500" class="log-input">
+                        </div>
+                    </td>
+                    <td>
+                        <button onclick="sendSMS('LOG HVMRT ', 'log-content')" class="sms-btn">Send Update</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <script>
-    // Register the Service Worker
+    // JS to handle dynamic SMS construction based on user input
+    function sendSMS(prefix, inputId) {
+        const inputElement = document.getElementById(inputId);
+        const text = inputElement ? inputElement.value.trim() : '';
+        const recipient = '+447537415551';
+        
+        // Construct standard SMS URI format
+        const bodyText = prefix + text;
+        window.location.href = `sms:${recipient}?body=${encodeURIComponent(bodyText)}`;
+    }
+
+    // Register the PWA Service Worker
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('./sw.js')
