@@ -1,7 +1,7 @@
 {
-  "name": "HVMRT Remote Trigger",
-  "short_name": "HVMRT Trigger",
-  "description": "Remote SMS trigger portal for Holme Valley Mountain Rescue Team.",
+  "name": "HVMRT SMS Helper",
+  "short_name": "SMS Helper",
+  "description": "SMS trigger portal for Holme Valley Mountain Rescue Team.",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#232b38",
