@@ -2,7 +2,7 @@
   "name": "HVMRT Vehicle Card",
   "short_name": "Vehicle Card",
   "description": "Digital Vehicle Card for Holme Valley Mountain Rescue Team.",
-  "start_url": "./vehicles.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#232b38",
   "theme_color": "#c8102e",

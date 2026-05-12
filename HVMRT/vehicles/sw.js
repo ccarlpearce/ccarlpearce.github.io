@@ -1,7 +1,7 @@
 const CACHE_NAME = 'hvmrt-vehicle-card-v1';
 const ASSETS = [
   './',
-  './vehicles.html',
+  './index.html',
   './manifest.json',
   '../icon-192.png',
   '../icon-512.png',
