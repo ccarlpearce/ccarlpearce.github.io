@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HVMRT - Vehicle Management Dashboard</title>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#c8102e">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="HVMRT Vehicles">
+    <link rel="apple-touch-icon" href="icon-192.png">
+
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="vehicle_styles.css">
+
+</head>
+
+<body class="status-tab-active">
+    <div class="container">
+        <div class="header-container">
+            <img src="https://holmevalleymrt.org.uk/wp-content/uploads/2023/12/cropped-icon.jpg" alt="HVMRT Logo"
+                class="logo">
+            <div class="header-text">
+                <h1>Vehicle Management Portal</h1>
+                <div class="subtitle">Holme Valley Mountain Rescue Team</div>
+            </div>
+        </div>
+
+        <div class="tabs-nav">
+            <button class="tab-btn active" id="btn-status" onclick="openTab(event, 'status')">Status Card</button>
+            <button class="tab-btn" id="btn-ops" onclick="openTab(event, 'ops')">Drive & Checks</button>
+            <button class="tab-btn" id="btn-settings" onclick="openTab(event, 'settings')">Settings</button>
+        </div>
+
+        <div id="status" class="tab-content active">
+            <div id="vehicle-card" class="vehicle-card">
+
+                <div class="card-title" id="card-vehicle-name" >Loading...</div>
+
+                <br>
+
+                <div class="card-status-badge" id="card-status-text" >Status: Checking...</div>
+
+                <p id="card-vehicle-notes" class="card-notes">Please navigate to the Settings tab to configure this
+                    vehicle's parameters.</p>
+
+                <button onclick="goToSettingsTab()" class="card-link-btn">Configure Settings &rarr;</button>
+            </div>
+        </div>
+
+        <div id="ops" class="tab-content">
+            <div class="ops-section">
+                <h3 class="section-heading">Log Vehicle Movements</h3>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLScMkV2fbu8lsYw6JE9c1jemWdNSrf5-BRlD6jan1j7vAOLC2Q/viewform?usp=header" target="_blank"
+                    class="sms-btn log-drive-btn">
+                    Log Drive (Google Forms)
+                </a>
+            </div>
+
+            <div class="ops-section">
+                <h3 class="section-heading">Vehicle Inspections</h3>
+                <div class="qr-grid">
+                    <div class="qr-card">
+                        <span class="qr-title">RTB Inspection</span>
+                        <div class="qr-image-wrapper">
+                            <img src="rtb_inspec.png" alt="RTB Inspection QR Code" class="qr-code-img">
+                        </div>
+                        <span class="note">Scan post-incident/training</span>
+                    </div>
+                    <div class="qr-card">
+                        <span class="qr-title">Monthly Inspection</span>
+                        <div class="qr-image-wrapper">
+                            <img src="mnth_inspec.png" alt="Monthly Inspection QR Code" class="qr-code-img">
+                        </div>
+                        <span class="note">Full deep check list</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="settings" class="tab-content">
+            <div class="table-container settings-form-container">
+                <h3 class="section-heading" style="padding: 15px 16px 0 16px; margin: 0;">Vehicle Parameters</h3>
+
+                <div class="form-group">
+                    <label for="input-vehicle-name" class="form-label">Vehicle Identifier / Name</label>
+                    <input type="text" id="input-vehicle-name" placeholder="e.g. Mobile 1 (Ford Ranger)"
+                        class="log-input">
+                </div>
+
+                <div class="form-group inline-toggle">
+                    <label for="input-vehicle-ready" class="form-label">Vehicle Fully Operational / Ready?</label>
+                    <input type="checkbox" id="input-vehicle-ready" class="form-checkbox">
+                </div>
+
+                <div class="form-group">
+                    <label for="input-vehicle-notes" class="form-label">Operational Status Notes</label>
+                    <textarea id="input-vehicle-notes"
+                        placeholder="e.g. Full kit checked. Half tank of fuel. Offside rear tire running low (28 psi)."
+                        class="log-input form-textarea" rows="4"></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button onclick="saveVehicleSettings()" class="sms-btn">Save Vehicle Configuration</button>
+                </div>
+            </div>
+        </div>
+
+        <footer class="app-footer">
+            <p>System Version: <span id="app-version">Loading...</span></p>
+        </footer>
+    </div>
+
+    <script>
+        // Tab Navigation Controller
+        function openTab(evt, tabName) {
+            let content = document.getElementsByClassName("tab-content");
+            for (let i = 0; i < content.length; i++) content[i].classList.remove("active");
+
+            let buttons = document.getElementsByClassName("tab-btn");
+            for (let i = 0; i < buttons.length; i++) buttons[i].classList.remove("active");
+
+            document.getElementById(tabName).classList.add("active");
+            if (evt) {
+                evt.currentTarget.classList.add("active");
+            }
+
+            // Full-page background switcher state engine
+            if (tabName === 'status') {
+                document.body.classList.add('status-tab-active');
+            } else {
+                document.body.classList.remove('status-tab-active');
+            }
+        }
+
+        // Direct programmatic navigation routing to the Settings Tab
+        function goToSettingsTab() {
+            const btnSettings = document.getElementById('btn-settings');
+            openTab(null, 'settings');
+            if (btnSettings) btnSettings.classList.add('active');
+        }
+
+        // Local Storage State Management Engine
+        function loadVehicleSettings() {
+            // Pull settings with sensible defaults if completely unconfigured
+            const storedName = localStorage.getItem('hvmrt_veh_name') || 'Mobile X';
+            const storedReady = localStorage.getItem('hvmrt_veh_ready') === 'true';
+            const storedNotes = localStorage.getItem('hvmrt_veh_notes') || 'No specific asset alerts logged.';
+
+            // 1. Populate the active form inputs inside the settings tab
+            document.getElementById('input-vehicle-name').value = storedName;
+            document.getElementById('input-vehicle-ready').checked = storedReady;
+            document.getElementById('input-vehicle-notes').value = storedNotes;
+
+            // 2. Render live updates directly onto the giant high-visibility status card elements
+            const nameElement = document.getElementById('card-vehicle-name');
+            const notesElement = document.getElementById('card-vehicle-notes');
+            const statusTextElement = document.getElementById('card-status-text');
+
+            nameElement.textContent = storedName; // Updates the prominent name field
+            notesElement.textContent = storedNotes;
+
+            // Toggle full body class context layout rules based on readiness boolean
+            if (storedReady) {
+                document.body.classList.add('ready-true');
+                document.body.classList.remove('ready-false');
+                statusTextElement.textContent = "STATUS: OPERATIONAL / READY";
+            } else {
+                document.body.classList.add('ready-false');
+                document.body.classList.remove('ready-true');
+                statusTextElement.textContent = "STATUS: NON-OPERATIONAL / ALERT";
+            }
+        }
+
+        function saveVehicleSettings() {
+            const nameVal = document.getElementById('input-vehicle-name').value.trim();
+            const readyVal = document.getElementById('input-vehicle-ready').checked;
+            const notesVal = document.getElementById('input-vehicle-notes').value.trim();
+
+            // Commit data settings to memory
+            localStorage.setItem('hvmrt_veh_name', nameVal || 'Unnamed Vehicle');
+            localStorage.setItem('hvmrt_veh_ready', readyVal || false);
+            localStorage.setItem('hvmrt_veh_notes', notesVal || 'No explicit operation entries recorded.');
+
+            // Refresh Card Interface rendering instantly
+            loadVehicleSettings();
+
+            // Return user focus smoothly back to dashboard summary card display
+            const btnStatus = document.getElementById('btn-status');
+            openTab(null, 'status');
+            if (btnStatus) btnStatus.classList.add('active');
+        }
+
+        // Parse Service Worker metadata for logging app build status
+        function updateVersionDisplay() {
+            fetch('./sw.js')
+                .then(response => {
+                    if (!response.ok) throw new Error('Offline');
+                    return response.text();
+                })
+                .then(text => {
+                    const match = text.match(/CACHE_NAME\s*=\s*['"`](.*?)['"`]/);
+                    if (match && match[1]) {
+                        document.getElementById('app-version').textContent = match[1];
+                    }
+                })
+                .catch(() => {
+                    if ('caches' in window) {
+                        caches.keys().then(keys => {
+                            const activeCache = keys.find(key => key.startsWith('hvmrt'));
+                            document.getElementById('app-version').textContent = activeCache || 'Offline Mode';
+                        });
+                    }
+                });
+        }
+
+        // Core App Lifecycle Hooks Initialization
+        window.addEventListener('DOMContentLoaded', () => {
+            loadVehicleSettings();
+            updateVersionDisplay();
+        });
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('Service Worker Registered.', reg.scope))
+                    .catch(err => console.log('SW Registration Failed.', err));
+            });
+
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                window.location.reload();
+            });
+        }
+    </script>
+</body>
+
+</html>
