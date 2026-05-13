@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HVMRT - Digital Incident Control Pack</title>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#c8102e">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="HVMRT ICP">
+    <link rel="apple-touch-icon" href="icon-192.png">
+
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--dark-slate);
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-colour);
+            border-radius: 6px;
+            background-color: #f8fafc;
+            font-family: inherit;
+            font-size: 0.95rem;
+            color: var(--text-colour);
+            box-sizing: border-box;
+            transition: all 0.2s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-colour);
+            box-shadow: 0 0 0 3px rgba(200, 16, 46, 0.15);
+            background-color: #ffffff;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 10px;
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid var(--border-colour);
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: var(--dark-slate);
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            accent-color: var(--primary-colour);
+            width: 16px;
+            height: 16px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .preview-box {
+            background-color: #f8fafc;
+            border: 1px dashed var(--border-colour);
+            padding: 15px;
+            border-radius: 6px;
+            font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+            font-size: 0.85rem;
+            white-space: pre-wrap;
+            margin-bottom: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="header-container">
+            <img src="https://holmevalleymrt.org.uk/wp-content/uploads/2023/12/cropped-icon.jpg" alt="HVMRT Logo"
+                class="logo">
+            <div class="header-text">
+                <h1>Incident Control Pack</h1>
+                <div class="subtitle">Digital Initial Response Form</div>
+            </div>
+        </div>
+
+        <details class="instructions">
+            <summary>How to use (tap to expand)</summary>
+            <div class="instructions-content">
+                Complete the details across the tabs below. This replaces the physical 1.0 Initial Response and 1.2
+                Misper Profile sheets.
+                <br><br>
+                Data is stored <strong>only on this device</strong>. Navigate to the "Export" tab to generate a text
+                summary that can be copied to your clipboard (for pasting into SARCall or D4H) or sent directly via your
+                device's email app.
+            </div>
+        </details>
+
+        <div class="tabs-nav">
+            <button class="tab-btn active" onclick="openTab(event, 'initial')">1.0 Initial</button>
+            <button class="tab-btn" onclick="openTab(event, 'misper')">1.2 Misper</button>
+            <button class="tab-btn" onclick="openTab(event, 'urgency')">Urgency</button>
+            <button class="tab-btn" onclick="openTab(event, 'export')">Export</button>
+        </div>
+
+        <div id="initial" class="tab-content active">
+            <div class="grid-2">
+                <div class="form-group">
+                    <label class="form-label">Incident Name</label>
+                    <input type="text" id="inc-name" class="form-control" placeholder="e.g. Holme Moss Search">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Date</label>
+                    <input type="date" id="inc-date" class="form-control">
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="form-group">
+                    <label class="form-label">Controller</label>
+                    <input type="text" id="inc-controller" class="form-control" placeholder="Name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Pol Log No.</label>
+                    <input type="text" id="inc-log" class="form-control" placeholder="Log reference">
+                </div>
+            </div>
+
+            <hr style="border: 0; border-top: 1px solid var(--border-colour); margin: 20px 0;">
+
+            <div class="form-group">
+                <label class="form-label">Location (PLS or LKP?)</label>
+                <input type="text" id="inc-location" class="form-control"
+                    placeholder="Last known position or point last seen">
+            </div>
+
+            <div class="grid-2">
+                <div class="form-group">
+                    <label class="form-label">Grid Reference</label>
+                    <input type="text" id="inc-grid" class="form-control" placeholder="e.g. SE 123 456">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Time Last Seen</label>
+                    <input type="time" id="inc-time" class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Initial Action / Plan</label>
+                <textarea id="inc-plan" class="form-control" placeholder="Initial steps taken..."></textarea>
+            </div>
+        </div>
+
+        <div id="misper" class="tab-content">
+            <div class="grid-2">
+                <div class="form-group">
+                    <label class="form-label">Misper Name</label>
+                    <input type="text" id="misper-name" class="form-control" placeholder="Full name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Age / D.O.B.</label>
+                    <input type="text" id="misper-age" class="form-control" placeholder="Age or DOB">
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="form-group">
+                    <label class="form-label">Gender</label>
+                    <select id="misper-gender" class="form-control">
+                        <option value="">Select...</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other / Unknown</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Footwear Size</label>
+                    <input type="text" id="misper-shoe" class="form-control" placeholder="e.g. UK 9">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Physical Description</label>
+                <textarea id="misper-desc" class="form-control"
+                    placeholder="Height, build, hair colour, distinguishing features..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Clothing Worn</label>
+                <textarea id="misper-clothing" class="form-control"
+                    placeholder="Jacket, trousers, colours..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Capability / Health / Medication</label>
+                <textarea id="misper-health" class="form-control"
+                    placeholder="Known medical issues, current medication, fitness level..."></textarea>
+            </div>
+        </div>
+
+        <div id="urgency" class="tab-content">
+            <div class="form-group">
+                <label class="form-label">Category</label>
+                <select id="misper-category" class="form-control" style="margin-bottom: 15px;">
+                    <option value="">Select Category...</option>
+                    <option value="Walker (Solo)">Walker (Solo)</option>
+                    <option value="Walker (Group)">Walker (Group)</option>
+                    <option value="Mountain Biker">Mountain Biker</option>
+                    <option value="Climber">Climber</option>
+                    <option value="Fell Runner">Fell Runner</option>
+                    <option value="Child (1-16 Years)">Child (1-16 Years)</option>
+                    <option value="Dementia">Dementia</option>
+                    <option value="Despondent">Despondent</option>
+                    <option value="Psych. Illness">Psych. Illness</option>
+                </select>
+            </div>
+
+            <label class="form-label">Urgency Factors (Tick all that apply)</label>
+            <div class="checkbox-grid" id="urgency-factors">
+                <label class="checkbox-item"><input type="checkbox" value="Solo"> Solo</label>
+                <label class="checkbox-item"><input type="checkbox" value="Ill Equipped"> Ill Equipped</label>
+                <label class="checkbox-item"><input type="checkbox" value="Young"> Young</label>
+                <label class="checkbox-item"><input type="checkbox" value="Old"> Old</label>
+                <label class="checkbox-item"><input type="checkbox" value="Medical Problems"> Medical Problems</label>
+                <label class="checkbox-item"><input type="checkbox" value="Poor Weather"> Poor Weather</label>
+                <label class="checkbox-item"><input type="checkbox" value="Difficult Terrain"> Difficult Terrain</label>
+                <label class="checkbox-item"><input type="checkbox" value="Inexperienced"> Inexperienced</label>
+            </div>
+        </div>
+
+        <div id="export" class="tab-content">
+            <h2 style="display:block; margin-top:0; font-size: 1.1rem;">Review & Export Details</h2>
+            <div id="report-preview" class="preview-box">
+                Tap 'Refresh Preview' to view the generated report based on your inputs.
+            </div>
+
+            <div class="action-buttons">
+                <button onclick="updatePreview()" class="sms-btn"
+                    style="background-color: var(--dark-slate);">Refresh</button>
+                <button onclick="copyToClipboard()" class="sms-btn">Copy to Clipboard</button>
+                <button onclick="emailReport()" class="sms-btn">Email Report</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Tab switching logic
+        function openTab(evt, tabName) {
+            let content = document.getElementsByClassName("tab-content");
+            for (let i = 0; i < content.length; i++) content[i].classList.remove("active");
+
+            let buttons = document.getElementsByClassName("tab-btn");
+            for (let i = 0; i < buttons.length; i++) buttons[i].classList.remove("active");
+
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+
+            if (tabName === 'export') {
+                updatePreview();
+            }
+        }
+
+        // Helper to get element value safely
+        const getVal = (id) => document.getElementById(id).value.trim() || "Not specified";
+
+        // Logic to build the raw text report
+        function generateRawReport() {
+            // Gather urgency checkboxes
+            const checkboxes = document.querySelectorAll('#urgency-factors input[type="checkbox"]:checked');
+            const urgencyItems = Array.from(checkboxes).map(cb => cb.value).join(', ') || "None checked";
+
+            let report = `=== HVMRT INITIAL INCIDENT CONTROL ===\n\n`;
+
+            report += `[1.0 INITIAL RESPONSE]\n`;
+            report += `Incident: ${getVal('inc-name')}\n`;
+            report += `Date: ${getVal('inc-date')}\n`;
+            report += `Controller: ${getVal('inc-controller')}\n`;
+            report += `Pol Log No: ${getVal('inc-log')}\n`;
+            report += `Location (PLS/LKP): ${getVal('inc-location')}\n`;
+            report += `Grid Ref: ${getVal('inc-grid')}\n`;
+            report += `Time Last Seen: ${getVal('inc-time')}\n`;
+            report += `Initial Plan: ${getVal('inc-plan')}\n\n`;
+
+            report += `[1.2 MISPER PROFILE]\n`;
+            report += `Name: ${getVal('misper-name')}\n`;
+            report += `Age/DOB: ${getVal('misper-age')}\n`;
+            report += `Gender: ${getVal('misper-gender')}\n`;
+            report += `Category: ${getVal('misper-category')}\n`;
+            report += `Shoe Size: ${getVal('misper-shoe')}\n`;
+            report += `Physical Desc: ${getVal('misper-desc')}\n`;
+            report += `Clothing: ${getVal('misper-clothing')}\n`;
+            report += `Health/Meds: ${getVal('misper-health')}\n\n`;
+
+            report += `[URGENCY ANALYSIS]\n`;
+            report += `Risk Factors: ${urgencyItems}\n`;
+
+            return report;
+        }
+
+        function updatePreview() {
+            document.getElementById('report-preview').textContent = generateRawReport();
+        }
+
+        function copyToClipboard() {
+            const textToCopy = generateRawReport();
+
+            // Modern Clipboard API
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    alert("Report copied to clipboard.");
+                }).catch(err => {
+                    alert("Failed to copy text: " + err);
+                });
+            } else {
+                // Fallback for older browsers / non-HTTPS
+                let textArea = document.createElement("textarea");
+                textArea.value = textToCopy;
+                textArea.style.position = "fixed";
+                textArea.style.left = "-999999px";
+                textArea.style.top = "-999999px";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    alert("Report copied to clipboard.");
+                } catch (err) {
+                    alert("Failed to copy text: " + err);
+                }
+                textArea.remove();
+            }
+        }
+
+        function emailReport() {
+            const subject = encodeURIComponent("HVMRT Incident Control Report - " + (document.getElementById('inc-name').value || "New Incident"));
+            const body = encodeURIComponent(generateRawReport());
+            window.location.href = `mailto:?subject=${subject}&body=${body}`;
+        }
+
+        // Auto-set date to today on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const dateInput = document.getElementById('inc-date');
+            if (!dateInput.value) {
+                dateInput.value = new Date().toISOString().split('T')[0];
+            }
+        });
+    </script>
+</body>
+
+</html>

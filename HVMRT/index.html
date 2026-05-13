@@ -33,6 +33,8 @@
             <summary>How to use (tap to expand) </summary>
             <div class="instructions-content">Tap any action button below. Your native SMS app will launch with the recipient number and system triggers pre-filled. For Incident Logs, type your text in the box before hitting the button.
                 <br><br>Always review the message before sending to ensure accuracy. This tool is designed for quick communication with SARCall and team groups, but should be used responsibly and in accordance with team protocols.
+                <br><br>WARNING: This will only work for registered HVMRT Team Members. If you need Mountain Rescue
+                services, call '999', ask for the police and state the need for Mountain Rescue.
                 <br><br>System Version: <subtitle id="app-version">Loading...</subtitle>
             </div>
         </details>
@@ -44,7 +46,10 @@
         </div>
 
         <div id="groups" class="tab-content active">
+            <h3 class="section-heading">WARNING: This will only work for registered HVMRT Team Members. If you need Mountain Rescue
+                services, call '999', ask for the police and state the need for Mountain Rescue.</h3>
             <div class="table-container">
+                
                 <table>
                     <thead>
                         <tr>
@@ -95,7 +100,11 @@
                     </tbody>
                 </table>
             </div>
+            <h3 class="section-heading">WARNING: This will only work for registered HVMRT Team Members. If you need Mountain Rescue
+                services, call '999', ask for the police and state the need for Mountain Rescue.</h3>
         </div>
+
+        
 
         <div id="logs" class="tab-content">
             <div class="table-container">
@@ -151,60 +160,131 @@
         <h2>Functions, Links and Other Tools</h2>
         <div id="tools" class="tab-content">
             <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="width: 40%;">Function</th>
-                            <th style="width: 20%;">Code</th>
-                            <th style="width: 40%;">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><span class="group-title">Response Summary (SMS)</span></td>
-                            <td><span class="badge">STX</span></td>
-                            <td><a href="sms:+447537415551?body=STX%20HVMRT" class="sms-btn">Get Response Summary as
-                                    SMS</a></td>
-                        </tr>
-                        <tr>
-                            <td><span class="group-title">Response List (SMS)</span></td>
-                            <td><span class="badge">STL</span></td>
-                            <td><a href="sms:+447537415551?body=STL%20HVMRT" class="sms-btn">Get Full List of Responses
-                                    as SMS</a></td>
-                        </tr>
-                        <tr>
-                            <td><span class="group-title">Response List (Web)</span></td>
-                            <td></td>
-                            <td><a href="https://sarcall.mountain.rescue.org.uk/remote/remote_handler.php?t=5ffc25f564192657b7f668ca60a48c75ffa399ccb396ea603dfd0101e8555a94" target="_blank" class="sms-btn">Get Full List of Responses</a></td>
-                        </tr>
-                        <tr>
-                            <td><span class="group-title">SarCall Login (Web)</span></td>
-                            <td></td>
-                            <td><a href="https://sarcall.mountain.rescue.org.uk/login.php" target="_blank" class="sms-btn">SarCall Login</a></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span class="group-title">Misper Form (Web)</span>
-                                <span class="note">Data entry and collection form for initial MISPER calls</span>
-                            </td>
-                            <td></td>
-                            <td><a href="https://hvmrt.github.io/misper/" target="_blank" class="sms-btn">MISPER Data Form</a></td>
-                        </tr>
-                        <tr>
-                            <td><span class="group-title">MRMap Mobile (Web)</span></td>
-                            <td></td>
-                            <td><a href="https://mrmapmobile.wmrt.org.uk" target="_blank" class="sms-btn">MRMap Mobile</a></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span class="group-title">Digital Vehicle Card (ALPHA) (Web)</span>
-                                <span class="note">Digital version of the Ready/Not Ready cards. Early version.</span>
-                            </td>
-                            <td></td>
-                            <td><a href="https://scooby.denby.tech/HVMRT/vehicles/index.html" class="sms-btn">Vehicle Card</a></td>
-                        </tr>
-                    </tbody>
-                </table>
+
+
+                <h3 class="section-heading">SARCall</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 40%;">Function</th>
+                                <th style="width: 20%;">Code</th>
+                                <th style="width: 40%;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="group-title">Response Summary (SMS)</span></td>
+                                <td><span class="badge">STX</span></td>
+                                <td><a href="sms:+447537415551?body=STX%20HVMRT" class="sms-btn">Get Response Summary as SMS</a></td>
+                            </tr>
+                            <tr>
+                                <td><span class="group-title">Response List (SMS)</span></td>
+                                <td><span class="badge">STL</span></td>
+                                <td><a href="sms:+447537415551?body=STL%20HVMRT" class="sms-btn">Get Full List of Responses as SMS</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span class="group-title">Response List (Web)</span></td>
+                                <td></td>
+                                <td><a href="https://sarcall.mountain.rescue.org.uk/remote/remote_handler.php?t=5ffc25f564192657b7f668ca60a48c75ffa399ccb396ea603dfd0101e8555a94"
+                                        target="_blank" class="sms-btn">Get Full List of Responses</a></td>
+                            </tr>
+                            <tr>
+                                <td><span class="group-title">SarCall Login (Web)</span></td>
+                                <td></td>
+                                <td><a href="https://sarcall.mountain.rescue.org.uk/login.php" target="_blank" class="sms-btn">SarCall
+                                        Login</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="section-heading">Tools</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 50%;">Function</th>
+                                <th style="width: 50%;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span class="group-title">Misper Form (Web)</span>
+                                    <span class="note">Data entry and collection form for initial MISPER calls</span>
+                                </td>
+                                <td><a href="https://hvmrt.github.io/misper/" target="_blank" class="sms-btn">MISPER Data Form</a></td>
+                            </tr>
+                            <tr>
+                                <td><span class="group-title">MRMap Mobile (Web)</span></td>
+                                <td><a href="https://mrmapmobile.wmrt.org.uk" target="_blank" class="sms-btn">MRMap Mobile</a></td>
+                            </tr>
+                            <tr>
+                                <td><span class="group-title">Grid Reference Finder (Web)</span></td>
+                                <td><a href="https://gridreferencefinder.com" target="_blank" class="sms-btn">Grid Reference Finder</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="section-heading">Search Stats</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 50%;">Function</th>
+                                <th style="width: 50%;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span class="group-title">MISPER UK (Web)</span>
+                                    <span class="note">The Centre for Search Research Stats</span>
+                                </td>
+                                <td><a href="https://misper.uk/initial-response" target="_blank" class="sms-btn">CSR Misper UK</a></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="group-title">KSTAT (Web)</span>
+                                    <span class="note">Kent SAR Stats</span>
+                                </td>
+                                <td><a href="https://www.kstat.org/" target="_blank" class="sms-btn">KSTAT UK</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="section-heading">Other</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 50%;">Function</th>
+                                <th style="width: 50%;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span class="group-title">Digital Vehicle Card (ALPHA) (Web)</span>
+                                    <span class="note">Digital version of the Ready/Not Ready cards. Early version.</span>
+                                </td>
+                                <td><a href="https://scooby.denby.tech/HVMRT/vehicles/index.html" class="sms-btn">Vehicle Card</a></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="group-title">Initial Details Capture (ALPHA) (Web)</span>
+                                    <span class="note">Sample of the existing MISPER Form (above) in a re-worked style. Early version.</span>
+                                </td>
+                                <td><a href="https://scooby.denby.tech/HVMRT/controlPack.html" class="sms-btn">Initial Details (sample)</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
             </div>
         </div>
     </div>
