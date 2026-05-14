@@ -39,11 +39,11 @@
         <div id="status" class="tab-content active">
             <div id="vehicle-card" class="vehicle-card">
 
-                <div class="card-title" id="card-vehicle-name" >Loading...</div>
+                <div class="card-title" id="card-vehicle-name">Loading...</div>
 
                 <br>
 
-                <div class="card-status-badge" id="card-status-text" >Status: Checking...</div>
+                <div class="card-status-badge" id="card-status-text">Status: Checking...</div>
 
                 <p id="card-vehicle-notes" class="card-notes">Please navigate to the Settings tab to configure this
                     vehicle's parameters.</p>
@@ -55,8 +55,8 @@
         <div id="ops" class="tab-content">
             <div class="ops-section">
                 <h3 class="section-heading">Log Vehicle Movements</h3>
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLScMkV2fbu8lsYw6JE9c1jemWdNSrf5-BRlD6jan1j7vAOLC2Q/viewform?usp=header" target="_blank"
-                    class="sms-btn log-drive-btn">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLScMkV2fbu8lsYw6JE9c1jemWdNSrf5-BRlD6jan1j7vAOLC2Q/viewform?usp=header"
+                    target="_blank" class="sms-btn log-drive-btn">
                     Log Drive (Google Forms)
                 </a>
             </div>
@@ -116,6 +116,39 @@
     </div>
 
     <script>
+        // Global anchor for the Wake Lock reference
+        let wakeLock = null;
+
+        // Function to safely request screen wake lock
+        async function requestWakeLock() {
+            if ('wakeLock' in navigator && !wakeLock) {
+                try {
+                    wakeLock = await navigator.wakeLock.request('screen');
+                    console.log('Screen Wake Lock successfully acquired.');
+
+                    // Re-index to null if the browser or system forces a release
+                    wakeLock.addEventListener('release', () => {
+                        console.log('Screen Wake Lock was released.');
+                        wakeLock = null;
+                    });
+                } catch (err) {
+                    console.error(`Wake Lock Error: ${err.name}, ${err.message}`);
+                }
+            }
+        }
+
+        // Function to safely release screen wake lock
+        async function releaseWakeLock() {
+            if (wakeLock) {
+                try {
+                    await wakeLock.release();
+                    wakeLock = null;
+                } catch (err) {
+                    console.error(`Wake Lock Release Error: ${err.name}, ${err.message}`);
+                }
+            }
+        }
+
         // Tab Navigation Controller
         function openTab(evt, tabName) {
             let content = document.getElementsByClassName("tab-content");
@@ -129,11 +162,13 @@
                 evt.currentTarget.classList.add("active");
             }
 
-            // Full-page background switcher state engine
+            // Full-page background switcher and wake lock state engine
             if (tabName === 'status') {
                 document.body.classList.add('status-tab-active');
+                requestWakeLock(); // Lock screen on
             } else {
                 document.body.classList.remove('status-tab-active');
+                releaseWakeLock(); // Allow screen to sleep normally on other tabs
             }
         }
 
@@ -146,25 +181,21 @@
 
         // Local Storage State Management Engine
         function loadVehicleSettings() {
-            // Pull settings with sensible defaults if completely unconfigured
             const storedName = localStorage.getItem('hvmrt_veh_name') || 'Mobile X';
             const storedReady = localStorage.getItem('hvmrt_veh_ready') === 'true';
             const storedNotes = localStorage.getItem('hvmrt_veh_notes') || 'No specific asset alerts logged.';
 
-            // 1. Populate the active form inputs inside the settings tab
             document.getElementById('input-vehicle-name').value = storedName;
             document.getElementById('input-vehicle-ready').checked = storedReady;
             document.getElementById('input-vehicle-notes').value = storedNotes;
 
-            // 2. Render live updates directly onto the giant high-visibility status card elements
             const nameElement = document.getElementById('card-vehicle-name');
             const notesElement = document.getElementById('card-vehicle-notes');
             const statusTextElement = document.getElementById('card-status-text');
 
-            nameElement.textContent = storedName; // Updates the prominent name field
+            nameElement.textContent = storedName;
             notesElement.textContent = storedNotes;
 
-            // Toggle full body class context layout rules based on readiness boolean
             if (storedReady) {
                 document.body.classList.add('ready-true');
                 document.body.classList.remove('ready-false');
@@ -181,15 +212,12 @@
             const readyVal = document.getElementById('input-vehicle-ready').checked;
             const notesVal = document.getElementById('input-vehicle-notes').value.trim();
 
-            // Commit data settings to memory
             localStorage.setItem('hvmrt_veh_name', nameVal || 'Unnamed Vehicle');
             localStorage.setItem('hvmrt_veh_ready', readyVal || false);
             localStorage.setItem('hvmrt_veh_notes', notesVal || 'No explicit operation entries recorded.');
 
-            // Refresh Card Interface rendering instantly
             loadVehicleSettings();
 
-            // Return user focus smoothly back to dashboard summary card display
             const btnStatus = document.getElementById('btn-status');
             openTab(null, 'status');
             if (btnStatus) btnStatus.classList.add('active');
@@ -218,10 +246,25 @@
                 });
         }
 
+        // Handle re-acquiring lock if app comes back from background/sleep
+        document.addEventListener('visibilitychange', async () => {
+            if (document.visibilityState === 'visible') {
+                const statusTab = document.getElementById('status');
+                if (statusTab && statusTab.classList.contains('active')) {
+                    await requestWakeLock();
+                }
+            }
+        });
+
         // Core App Lifecycle Hooks Initialization
         window.addEventListener('DOMContentLoaded', () => {
             loadVehicleSettings();
             updateVersionDisplay();
+
+            // Initialise wake lock if we start out on the status card view
+            if (document.body.classList.contains('status-tab-active')) {
+                requestWakeLock();
+            }
         });
 
         if ('serviceWorker' in navigator) {
