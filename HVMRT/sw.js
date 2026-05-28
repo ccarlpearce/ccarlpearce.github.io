@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hvmrt-sms-portal-v1.7.1';
+const CACHE_NAME = 'hvmrt-sms-portal-v1.8';
 const ASSETS = [
   './',
   './index.html',
