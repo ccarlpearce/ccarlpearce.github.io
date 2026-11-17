@@ -13,7 +13,6 @@
 
     <style>
         :root {
-            /* HVMRT brand colour scheme */
             --primary-colour: #c8102e;
             --primary-hover: #9e0b20;
             --dark-slate: #232b38;
@@ -116,7 +115,7 @@
             border-bottom: none;
         }
 
-        tr:hover {
+        tr.item-row:hover {
             background-color: #fcfdfe;
         }
 
@@ -126,7 +125,22 @@
             font-weight: 700;
         }
 
-        /* Form Inputs */
+        /* Form Inputs & Checkboxes */
+        .input-wrapper-flex {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            width: 100%;
+        }
+
+        .table-checkbox {
+            width: 22px;
+            height: 22px;
+            flex-shrink: 0;
+            cursor: pointer;
+            accent-color: var(--primary-colour);
+        }
+
         .table-input {
             width: 100%;
             box-sizing: border-box;
@@ -144,6 +158,17 @@
             box-shadow: 0 0 0 3px rgba(200, 16, 46, 0.15);
         }
 
+        /* Collapsible Section Headers */
+        .section-header {
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.2s ease;
+        }
+
+        .section-header:hover td {
+            background-color: #e2e8f0;
+        }
+
         .section-header td {
             background-color: #edf2f7;
             color: var(--dark-slate);
@@ -151,6 +176,23 @@
             text-transform: uppercase;
             font-size: 0.9rem;
             letter-spacing: 0.5px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        
+        .toggle-icon {
+            font-size: 0.8rem;
+            color: var(--primary-colour);
+            transition: transform 0.2s ease;
+        }
+
+        .hidden-row {
+            display: none !important;
         }
 
         .mobile-label {
@@ -210,9 +252,14 @@
                 display: none;
             }
 
-            tr {
+            tr.item-row {
                 border-bottom: 2px solid var(--border-colour);
                 padding: 15px 0;
+            }
+
+            tr.section-header {
+                padding: 0;
+                margin-top: 10px;
             }
 
             td {
@@ -220,17 +267,16 @@
                 padding: 6px 15px;
             }
 
-            .section-header {
-                padding: 0;
-            }
-
             .section-header td {
                 background-color: var(--dark-slate);
                 color: white;
-                text-align: center;
-                padding: 10px;
+                padding: 12px 15px;
                 border-radius: 6px;
-                margin: 0 15px;
+                margin: 0;
+            }
+
+            .toggle-icon {
+                color: white;
             }
 
             .mobile-label {
@@ -250,13 +296,8 @@
         }
 
         @media (max-width: 580px) {
-            body {
-                padding: 10px;
-            }
-
-            .container {
-                padding: 15px;
-            }
+            body { padding: 10px; }
+            .container { padding: 15px; }
         }
     </style>
 </head>
@@ -278,13 +319,13 @@
                 <thead>
                     <tr>
                         <th style="width: 25%;">Equipment Item</th>
-                        <th style="width: 20%;">Requested (tick/qty)</th>
-                        <th style="width: 20%;">Deployed (tick/time)</th>
+                        <th style="width: 20%;">Requested</th>
+                        <th style="width: 20%;">Deployed</th>
                         <th style="width: 35%;">Party taking equipment</th>
                     </tr>
                 </thead>
                 <tbody id="equipment-tbody">
-                    <!-- JavaScript will populate rows here to keep the HTML clean -->
+                    <!-- Dynamic Content Populated by JavaScript -->
                 </tbody>
             </table>
         </div>
@@ -296,7 +337,6 @@
     </div>
 
     <script>
-        // Data structure based on the PDF sections and items
         const equipmentData = {
             "Medical": [
                 "Primary bag", "Trauma bag", "Drugs kit", "Vacuum splints", "Casualty bag & roll mat"
@@ -323,29 +363,79 @@
 
         const tbody = document.getElementById('equipment-tbody');
 
+        // Toggle visibility of rows within a specific section
+        function toggleSection(sectionId) {
+            const rows = document.querySelectorAll(`.row-${sectionId}`);
+            const icon = document.getElementById(`icon-${sectionId}`);
+            let isExpanding = false;
+
+            rows.forEach(row => {
+                if (row.classList.contains('hidden-row')) {
+                    row.classList.remove('hidden-row');
+                    isExpanding = true;
+                } else {
+                    row.classList.add('hidden-row');
+                }
+            });
+            
+            icon.innerHTML = isExpanding ? '&#9660;' : '&#9654;';
+        }
+
+        // Handle auto-filling time when 'Deployed' checkbox is clicked
+        function handleDeployClick(checkbox, timeInputId) {
+            if (checkbox.checked) {
+                const now = new Date();
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const timeInput = document.querySelector(`[data-id="${timeInputId}"]`);
+                
+                // Set the current time if the box is currently empty
+                if (timeInput && !timeInput.value) {
+                    timeInput.value = `${hours}:${minutes}`;
+                }
+            }
+            saveForm();
+        }
+
         // Build the table dynamically
         Object.entries(equipmentData).forEach(([section, items]) => {
-            // Add Section Header
+            const sectionId = section.replace(/\s+/g, '');
+
+            // Header Row (Collapsible Toggle)
             const headerRow = document.createElement('tr');
             headerRow.className = 'section-header';
-            headerRow.innerHTML = `<td colspan="4">${section}</td>`;
+            headerRow.onclick = () => toggleSection(sectionId);
+            headerRow.innerHTML = `
+                <td colspan="4">
+                    <div class="header-content">
+                        <span>${section}</span>
+                        <span class="toggle-icon" id="icon-${sectionId}">&#9654;</span>
+                    </div>
+                </td>
+            `;
             tbody.appendChild(headerRow);
 
-            // Add Items
+            // Item Rows (Collapsed by default via 'hidden-row' class)
             items.forEach((item, index) => {
                 const row = document.createElement('tr');
-                // Create a unique ID base for saving/loading data
-                const baseId = `${section.replace(/\s+/g, '')}-${index}`;
+                row.className = `item-row row-${sectionId} hidden-row`;
+                const baseId = `${sectionId}-${index}`;
                 
                 row.innerHTML = `
                     <td><span class="group-title">${item}</span></td>
                     <td>
-                        <span class="mobile-label">Requested (tick/qty):</span>
-                        <input type="text" class="table-input" data-id="${baseId}-req" placeholder="Qty">
+                        <span class="mobile-label">Requested:</span>
+                        <div class="input-wrapper-flex">
+                            <input type="checkbox" class="table-checkbox" data-id="${baseId}-req-cb" onchange="saveForm()">
+                            <input type="text" class="table-input" data-id="${baseId}-req" placeholder="Qty">
+                        </div>
                     </td>
                     <td>
-                        <span class="mobile-label">Deployed (tick/time):</span>
-                        <input type="text" class="table-input" data-id="${baseId}-dep" placeholder="Time">
+                        <span class="mobile-label">Deployed:</span>
+                        <div class="input-wrapper-flex">
+                            <input type="checkbox" class="table-checkbox" data-id="${baseId}-dep-cb" onchange="handleDeployClick(this, '${baseId}-dep')">
+                            <input type="text" class="table-input" data-id="${baseId}-dep" placeholder="Time">
+                        </div>
                     </td>
                     <td>
                         <span class="mobile-label">Party taking equipment:</span>
@@ -357,45 +447,52 @@
         });
 
         // Form Persistence (Local Storage)
-        const STORAGE_KEY = 'hvmrt_equipment_form_data';
+        const STORAGE_KEY = 'hvmrt_equipment_form_data_v2';
 
         function saveForm() {
-            const inputs = document.querySelectorAll('.table-input');
             const data = {};
-            inputs.forEach(input => {
+            
+            document.querySelectorAll('.table-input').forEach(input => {
                 if (input.value.trim() !== '') {
                     data[input.getAttribute('data-id')] = input.value;
                 }
             });
+            
+            document.querySelectorAll('.table-checkbox').forEach(cb => {
+                if (cb.checked) {
+                    data[cb.getAttribute('data-id')] = true;
+                }
+            });
+
             localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
         }
 
         function loadForm() {
             const savedData = JSON.parse(localStorage.getItem(STORAGE_KEY));
             if (savedData) {
-                const inputs = document.querySelectorAll('.table-input');
-                inputs.forEach(input => {
+                document.querySelectorAll('.table-input').forEach(input => {
                     const id = input.getAttribute('data-id');
-                    if (savedData[id]) {
-                        input.value = savedData[id];
-                    }
+                    if (savedData[id]) input.value = savedData[id];
+                });
+                
+                document.querySelectorAll('.table-checkbox').forEach(cb => {
+                    const id = cb.getAttribute('data-id');
+                    if (savedData[id]) cb.checked = true;
                 });
             }
         }
 
         function clearForm() {
             if (confirm("Are you sure you want to clear the entire form?")) {
-                const inputs = document.querySelectorAll('.table-input');
-                inputs.forEach(input => input.value = '');
+                document.querySelectorAll('.table-input').forEach(input => input.value = '');
+                document.querySelectorAll('.table-checkbox').forEach(cb => cb.checked = false);
                 localStorage.removeItem(STORAGE_KEY);
             }
         }
 
-        // Add event listeners to all inputs to auto-save on change
         document.addEventListener('DOMContentLoaded', () => {
             loadForm();
-            const inputs = document.querySelectorAll('.table-input');
-            inputs.forEach(input => {
+            document.querySelectorAll('.table-input').forEach(input => {
                 input.addEventListener('input', saveForm);
             });
         });
@@ -405,20 +502,26 @@
             let markdown = "| Equipment Item | Requested | Deployed | Party taking equipment |\n";
             markdown += "|---|---|---|---|\n";
             
-            const rows = document.querySelectorAll('tbody tr:not(.section-header)');
+            const rows = document.querySelectorAll('tbody tr.item-row');
             let hasData = false;
 
             rows.forEach(row => {
                 const item = row.querySelector('.group-title').innerText.trim();
                 const inputs = row.querySelectorAll('.table-input');
+                const checkboxes = row.querySelectorAll('.table-checkbox');
                 
-                const req = inputs[0].value.trim();
-                const dep = inputs[1].value.trim();
+                const reqCb = checkboxes[0].checked;
+                const depCb = checkboxes[1].checked;
+                const reqVal = inputs[0].value.trim();
+                const depVal = inputs[1].value.trim();
                 const party = inputs[2].value.trim();
 
-                // Only include rows where at least one field has been filled out
-                if (req || dep || party) {
-                    markdown += `| ${item} | ${req} | ${dep} | ${party} |\n`;
+                const reqStr = (reqCb ? '[x] ' : '[ ] ') + reqVal;
+                const depStr = (depCb ? '[x] ' : '[ ] ') + depVal;
+
+                // Only include the row if it contains data (a checkmark or text)
+                if (reqCb || depCb || reqVal || depVal || party) {
+                    markdown += `| ${item} | ${reqStr.trim()} | ${depStr.trim()} | ${party} |\n`;
                     hasData = true;
                 }
             });
