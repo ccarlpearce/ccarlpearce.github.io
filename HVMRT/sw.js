@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hvmrt-sms-portal-v1.8';
+const CACHE_NAME = 'hvmrt-sms-portal-v1.9';
 const ASSETS = [
   './',
   './index.html',
@@ -7,6 +7,7 @@ const ASSETS = [
   './icon-512.png',
   './styles.css',
   './controlPack.html',
+  './kit_form.html',
   './vehicles/index.html',
   './vehicles/mnth_inspec.png',
   './vehicles/rtb_inspec.png',
